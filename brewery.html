@@ -5,16 +5,80 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #moredetails{
+            width: 30%;
+            margin: auto;
+          
+
+        }
+        #display{
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            /* overflow-y: scroll; */
+        }
+        h2{
+            color: blueviolet;
+        }
+        span{
+            color: red;
+        }
+        h1{
+            color: rgb(255, 115, 0);
+            text-align: center;
+        }
+      /* p::{
+          color: darkred;
+      } */
+    </style>
     <link rel="stylesheet" href="navbar.css"/>
 </head>
 <body>
+    <h1>Brewerages!!</h1>
     <div id="nav">
        
         <div><a href="home.html">Home</a></div>
         <div><a href="brewery.html">Brewery</a></div>
         <div><a href="search.html">Search</a></div>
      </div>
-    <h1>This is brewery page</h1>
+     <div id="moredetails">
+    <h2>More Details About Brewery</h2>
     <div id="display"></div>
+</div>
 </body>
 </html>
+
+<script>
+
+async function moredetails(){
+let getid= localStorage.getItem("id")
+
+let raw=await fetch(`https://api.openbrewerydb.org/breweries/${getid}`)
+let orginal= await raw.json()
+console.log(orginal)
+
+let p1=document.createElement("p")
+p1.innerText= "name:"+" "+orginal.name
+let p2=document.createElement("p")
+p2.innerText="phone:"+" "+orginal.phone
+let p3=document.createElement("p")
+p3.innerText="street:"+" "+orginal.street
+let p4=document.createElement("p")
+p4.innerText="postal code:"+" "+orginal.postal_code
+let p5=document.createElement("p")
+p5.innerText="country:"+" "+orginal.country
+let p6=document.createElement("p")
+p6.innerText="city:"+" "+orginal.city
+let p7=document.createElement("p")
+p7.innerText="latitiude:"+" "+orginal.latitude
+let p8=document.createElement("p")
+p8.innerText="longitude:"+" "+orginal.longitude
+let p9=document.createElement("p")
+p9.innerText="update_at:"+" "+orginal.updatd_at
+let p10=document.createElement("p")
+p10.innerText="website_url:"+" "+orginal.website_url
+
+document.getElementById("display").append(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10)
+}
+
+moredetails()
+</script>

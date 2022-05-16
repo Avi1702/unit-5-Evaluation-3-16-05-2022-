@@ -26,11 +26,17 @@
         button{
             background-color: chartreuse;
         }
+        select{
+            margin-top: 20px;
+        }
+        h1  { color: rgb(255, 115, 0);
+            text-align: center;
+        }
     </style>
     <link rel="stylesheet" href="navbar.css"/>
 </head>
 <body>
-
+<h1>Brewerages!!</h1>
     <div id="nav">
        
         <div><a href="home.html">Home</a></div>
@@ -38,10 +44,15 @@
         <div><a href="search.html">Search</a></div>
      </div>
 
-     <select id="select">
+     <select id="select" onchange="selectedValue()">
          <option value="">Select Brewery Type</optioin>
+         <option value="nano">Nano</option>
+         <option value="regional">Regional</option>
+         <option value="brewpub">Brewpub</option>
          <option value="micro">Micro</option>
-         <option value="palnning">Planning</option>
+         <option value="large">Large</option>
+         <option value="bar">Bar</option>
+         <option value="planning">planning</option>
      </select>
 
     <div id="main">
@@ -66,6 +77,26 @@
 
 <script >
 
+async function selectedValue(){
+    let selectedOption=document.getElementById("select").value
+    console.log(selectedOption)
+
+    let raw=await fetch(`https://api.openbrewerydb.org/breweries`)
+    let real=await raw.json()
+    let store=[]
+    // let filter= real.brewery_type.filter(items => console.log(items))
+    real.forEach(ele=>{
+        if(ele.brewery_type.includes(selectedOption)){
+            // let tr=document.createElement("tr")
+          store.push(ele)
+        }
+    })
+
+    showthedata(store)
+
+    // console.log(store)
+}
+
     async function fetchdata(){
 
         let raw= await fetch(`https://api.openbrewerydb.org/breweries`)
@@ -75,6 +106,7 @@
     }
 
     function showthedata(values){
+        document.getElementById("tbody").innerHTML=""
 
         values.forEach(ele => {
 
@@ -95,22 +127,10 @@
             btn.innerText="More Details"
 
             btn.addEventListener("click",function(){
-            //   window.location.href="brewery.html"
+       
                 let ans=ele.id
-                console.log(ans)
-                window.location.href="brewery.html"
-                // let str=JSON.parse(document.localStorage.getItem("id"))
+                storelocal(ans)
               
-                // let store
-                // if(str===null){
-                //     store=[]
-                // }
-                // else{
-                //     store=str
-                // }
-                // store.push(ans)
-                // document.localStorage.setItem("id",JSON.stringfy[ans])
-                // goTobrewery(ans)
             })
 
 
@@ -120,9 +140,18 @@
         });
     }
 
-    // function goTobrewery(id){
-    // window
-    // }
 
     fetchdata()
+
+
+
+    async function storelocal(id){
+
+localStorage.clear("id")
+  localStorage.setItem("id",id)
+  window.location.href="brewery.html"
+
+
+
+}
 </script>

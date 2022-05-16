@@ -9,7 +9,7 @@
     <style>
         body{
             text-align: center;
-            padding-top: 100px;
+            padding-top: 50px;
 
         }
         input{
@@ -24,24 +24,72 @@
 
         }
         #main{
-            margin-top: 50px;
+  
         width: 40%;
-        margin: auto;
+  
+        margin-top: 100px;
+    
+        }
+        table,tr,th,td{
+            border: 1px solid black;
+            
+        }
+        #main{
+            width: 50%;
+         
+            margin-top: 100px;
+        }
+        table{
+         
+            margin-top: 100px;
+        }
+        #both{
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin: auto;
+        
+        }
+        h1{
+            color: rgb(255, 115, 0);
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <h1>Brewerages!!</h1>
     <div id="nav">
        
         <div><a href="home.html">Home</a></div>
         <div><a href="brewery.html">Brewery</a></div>
         <div><a href="search.html">Search</a></div>
      </div>
-    <div id="main">    <input  placeholder="search" type="text" id="search" oninput="debounce(main,1000)"/>
-    <!-- <button id="searchbutton">Search</button> -->
+
+  <div id="both">  
+    <div id="main">  
+          <input  placeholder="search for brewerage" type="text" id="search" oninput="debounce(main,1000)"/>
+    
     <div id="suggestion"></div>
 </div>
 
+<div id="display">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Go To</th>
+            </tr>
+            
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+</div>
+</div> 
 </body>
 </html>
 <script>
@@ -50,6 +98,8 @@ async function main(){
     let display=document.getElementById("suggestion")
     display.style.border="1px solid black"
     display.style.overflowY="scroll"
+    display.innerHTML=""
+    document.getElementById("tbody").innerHTML=""
 let value=document.getElementById("search").value
  let raw= await fetch(`https://api.openbrewerydb.org/breweries?by_name=${value}&per_page=20`)
 
@@ -61,8 +111,40 @@ let value=document.getElementById("search").value
     p.innerText=ele.name
 
     document.getElementById("suggestion").append(p)
+   
+    let tr=document.createElement("tr")
+            let td1=document.createElement("td")
+            td1.textContent=ele.name
+
+            let td2=document.createElement("td")
+            td2.innerText=ele.brewery_type
+
+            let td3=document.createElement("td")
+            td3.innerText=ele.city
+
+            let td4=document.createElement("td")
+            td4.innerText=ele.state
+
+            let btn=document.createElement("button")
+            btn.innerText="More Details"
+
+            btn.addEventListener("click",function(){
+            //   window.location.href="brewery.html"
+                let ans=ele.id
+                storelocal(ans)
+                // window.location.href="brewery.html"
+             
+            })
+
+
+            tr.append(td1,td2,td3,td4,btn)
+
+            document.getElementById("tbody").append(tr)
+        
+
+
  });
- console.log(orginal)
+
 }
 
    
@@ -78,6 +160,16 @@ let value=document.getElementById("search").value
        func()
     },delay
    )
+  }
+
+  async function storelocal(id){
+
+    localStorage.clear("id")
+      localStorage.setItem("id",id)
+      window.location.href="brewery.html"
+
+    
+
   }
 
 
