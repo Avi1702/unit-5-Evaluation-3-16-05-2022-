@@ -1,0 +1,22 @@
+#nav{
+    width: 70%;
+    height: 50px;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid black;;
+}
+
+#nav >div{
+    width:25%;
+    height: 30px;
+    /* border: 1px solid black; */
+    text-align: center;
+    margin-top: 10px;
+
+    
+}
+a{
+    text-decoration: none;
+}

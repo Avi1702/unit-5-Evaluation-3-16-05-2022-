@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        table,tr,th,td{
+            border: 1px solid black;
+            
+        }
+        #main{
+            width: 50%;
+            margin: auto;
+            margin-top: 100px;
+        }
+        table{
+            margin: auto;
+        }
+        button:hover{
+            background-color: rgb(97, 200, 97);
+            color:purple;
+            cursor: pointer;
+        }
+        button{
+            background-color: chartreuse;
+        }
+    </style>
+    <link rel="stylesheet" href="navbar.css"/>
+</head>
+<body>
+
+    <div id="nav">
+       
+        <div><a href="home.html">Home</a></div>
+        <div><a href="brewery.html">Brewery</a></div>
+        <div><a href="search.html">Search</a></div>
+     </div>
+
+     <select id="select">
+         <option value="">Select Brewery Type</optioin>
+         <option value="micro">Micro</option>
+         <option value="palnning">Planning</option>
+     </select>
+
+    <div id="main">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Go To</th>
+                </tr>
+                
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+<script >
+
+    async function fetchdata(){
+
+        let raw= await fetch(`https://api.openbrewerydb.org/breweries`)
+        let orginal= await raw.json()
+        
+        showthedata(orginal)
+    }
+
+    function showthedata(values){
+
+        values.forEach(ele => {
+
+            let tr=document.createElement("tr")
+            let td1=document.createElement("td")
+            td1.textContent=ele.name
+
+            let td2=document.createElement("td")
+            td2.innerText=ele.brewery_type
+
+            let td3=document.createElement("td")
+            td3.innerText=ele.city
+
+            let td4=document.createElement("td")
+            td4.innerText=ele.state
+
+            let btn=document.createElement("button")
+            btn.innerText="More Details"
+
+            btn.addEventListener("click",function(){
+            //   window.location.href="brewery.html"
+                let ans=ele.id
+                console.log(ans)
+                window.location.href="brewery.html"
+                // let str=JSON.parse(document.localStorage.getItem("id"))
+              
+                // let store
+                // if(str===null){
+                //     store=[]
+                // }
+                // else{
+                //     store=str
+                // }
+                // store.push(ans)
+                // document.localStorage.setItem("id",JSON.stringfy[ans])
+                // goTobrewery(ans)
+            })
+
+
+            tr.append(td1,td2,td3,td4,btn)
+
+            document.getElementById("tbody").append(tr)
+        });
+    }
+
+    // function goTobrewery(id){
+    // window
+    // }
+
+    fetchdata()
+</script>

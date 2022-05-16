@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="navbar.css">
+    <style>
+        body{
+            text-align: center;
+            padding-top: 100px;
+
+        }
+        input{
+            width: 300px;
+            margin: auto;
+        }
+        #suggestion{
+            width: 305px;
+            height: 300px;
+            margin: auto;
+            margin-top: 10px;
+
+        }
+        #main{
+            margin-top: 50px;
+        width: 40%;
+        margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav">
+       
+        <div><a href="home.html">Home</a></div>
+        <div><a href="brewery.html">Brewery</a></div>
+        <div><a href="search.html">Search</a></div>
+     </div>
+    <div id="main">    <input  placeholder="search" type="text" id="search" oninput="debounce(main,1000)"/>
+    <!-- <button id="searchbutton">Search</button> -->
+    <div id="suggestion"></div>
+</div>
+
+</body>
+</html>
+<script>
+   
+async function main(){
+    let display=document.getElementById("suggestion")
+    display.style.border="1px solid black"
+    display.style.overflowY="scroll"
+let value=document.getElementById("search").value
+ let raw= await fetch(`https://api.openbrewerydb.org/breweries?by_name=${value}&per_page=20`)
+
+ let orginal= await raw.json()
+
+ orginal.forEach(ele => {
+     
+    let p=document.createElement("p")
+    p.innerText=ele.name
+
+    document.getElementById("suggestion").append(p)
+ });
+ console.log(orginal)
+}
+
+   
+   let timer 
+
+  function debounce(func,delay){
+
+   if(timer){
+       clearTimeout(timer)
+   }
+
+    timer=setTimeout(function(){
+       func()
+    },delay
+   )
+  }
+
+
+
+</script>
